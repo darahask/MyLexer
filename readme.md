@@ -1,6 +1,7 @@
 # LexTool Demonstration
 
 This is a Program written to perform lexical analysis of Java Programs, using **lex** tool, a Lexical Analyser generator.
+
  lex.l, Makefile, and four test java files(for demo usage) are provided.
 
 # Installation of Lex
@@ -29,7 +30,9 @@ Download all files into same dirctory and go the directory and open terminal and
 
 # Working of Lex
 
-`lex.l` -> on lex lex.l -> `lex.yy.c` -> on gcc lex.yy.c -o mylexer -> `mylexer`
+> `lex.l` -> on lex lex.l -> `lex.yy.c` -> on gcc lex.yy.c -o mylexer -> `mylexer`
+
+- This lexer outputs the Symbol table with no repeating symbols, table only has keywords,identifiers,int, float etc. and rest of the symbols which are operators and seperators are displayed seperately. 
 
 # Contributor
 

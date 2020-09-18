@@ -1,17 +1,20 @@
 %option noyywrap
 
 %{
-
+   //Number of rows in table
    int SIZE = 20;
 
+   //Block which stores the info about tokens and their symbol
    struct block{
       char  *type;
       char  *symbol;
       struct block *next;
     };
 
+   //Declaration
    struct block* hash_table[20];
 
+   //Hash function
    int hashFunc(char* symbol){
       unsigned long hash = 5381;
       int c;
@@ -22,6 +25,7 @@
     return hash%SIZE;
    }
 
+   //Inserting into the Hash Table
    void insert(char* type, char* symbol, int length){
       int hash = hashFunc(symbol);
       if(hash_table[hash] == NULL){
@@ -49,10 +53,10 @@
          }
       }
    }
-
+   //Printing into the table
    void printTable(){
-      printf("\n================SYMBOL TABLE=====================\n");
-      printf("###########TYPE###############SYMBOL###############\n");
+      printf("\n=================SYMBOL TABLE=====================\n");
+      printf("==============TYPE============SYMBOL==============\n\n");
       for(int i =0; i< SIZE; i++){
          if(hash_table[i] != NULL){
             struct block* head = hash_table[i];
@@ -78,63 +82,64 @@ double     {digit}+(\.{digit}+)?(e[+-]?{digit}+)?
 %%
 
 " "|"\n"              {;} 
-("//".*)|("/*".*"*/") {;}
-{keyword}             {printf("Keyword:%s\n",yytext);insert("Keyword",yytext,yyleng);}
-{int}                 {printf("Integer:%s\n",yytext);insert("int_var",yytext,yyleng);}
-{long}                {printf("Long:%s\n",yytext);insert("long_var",yytext,yyleng);}
-{float}               {printf("Float:%s\n",yytext);insert("float_var",yytext,yyleng);}
-{double}              {printf("Double:%s\n",yytext);insert("double_var",yytext,yyleng);}
-"true"|"false"        {printf("boolean:%s\n",yytext);insert("boolean",yytext,yyleng);}
-"\'".*"\'"            {printf("Character:%s\n",yytext);insert("char_var",yytext,yyleng);}
-"\"".*"\""            {printf("String:%s\n",yytext);insert("string_var",yytext,yyleng);}
-"null"                {printf("NullLiteral:%s\n",yytext);insert("nullliteral",yytext,yyleng);}
-"("                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-")"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"{"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"}"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-","                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-";"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"."                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"@"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"..."                 {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"::"                  {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"["                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"]"                   {printf("Seperator:%s\n",yytext);insert("Seperator",yytext,yyleng);}
-"-"                   {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"+"                   {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"*"                   {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"/"                   {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"%"                   {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"++"                  {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"--"                  {printf("Arithematic:%s\n",yytext);insert("Arithematic",yytext,yyleng);}
-"="                   {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"+="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"-="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"*="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"/="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"%="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"&="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"|="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"^="                  {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-">>="                 {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"<<="                 {printf("Assignment:%s\n",yytext);insert("Assignment",yytext,yyleng);}
-"=="                  {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-"!="                  {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-">"                   {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-"<"                   {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-"<="                  {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-">="                  {printf("Comparision:%s\n",yytext);insert("Comparision",yytext,yyleng);}
-"&&"                  {printf("Logical:%s\n",yytext);insert("Logical",yytext,yyleng);}
-"||"                  {printf("Logical:%s\n",yytext);insert("Logical",yytext,yyleng);}
-"!"                   {printf("Logical:%s\n",yytext);insert("Logical",yytext,yyleng);}
-"&"                   {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-"|"                   {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-"~"                   {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-"^"                   {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-"<<"                  {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-">>"                  {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-">>>"                 {printf("Bitwise:%s\n",yytext);insert("Bitwise",yytext,yyleng);}
-{Identifier}          {printf("Identifier: %s\n",yytext);insert("Identifier",yytext,yyleng);}
+("//".*)              {;}
+"/*"([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*"*"+"/"      {;}
+{keyword}             {insert("Keyword",yytext,yyleng);}
+{int}                 {insert("int_var",yytext,yyleng);}
+{long}                {insert("long_var",yytext,yyleng);}
+{float}               {insert("float_var",yytext,yyleng);}
+{double}              {insert("double_var",yytext,yyleng);}
+"true"|"false"        {insert("boolean",yytext,yyleng);}
+"\'".*"\'"            {insert("char_var",yytext,yyleng);}
+"\"".*"\""            {insert("string_var",yytext,yyleng);}
+"null"                {insert("nullliteral",yytext,yyleng);}
+"("                   {printf("Seperator:%s\n",yytext);}
+")"                   {printf("Seperator:%s\n",yytext);}
+"{"                   {printf("Seperator:%s\n",yytext);}
+"}"                   {printf("Seperator:%s\n",yytext);}
+","                   {printf("Seperator:%s\n",yytext);}
+";"                   {printf("Seperator:%s\n",yytext);}
+"."                   {printf("Seperator:%s\n",yytext);}
+"@"                   {printf("Seperator:%s\n",yytext);}
+"..."                 {printf("Seperator:%s\n",yytext);}
+"::"                  {printf("Seperator:%s\n",yytext);}
+"["                   {printf("Seperator:%s\n",yytext);}
+"]"                   {printf("Seperator:%s\n",yytext);}
+"-"                   {printf("Arithematic:%s\n",yytext);}
+"+"                   {printf("Arithematic:%s\n",yytext);}
+"*"                   {printf("Arithematic:%s\n",yytext);}
+"/"                   {printf("Arithematic:%s\n",yytext);}
+"%"                   {printf("Arithematic:%s\n",yytext);}
+"++"                  {printf("Arithematic:%s\n",yytext);}
+"--"                  {printf("Arithematic:%s\n",yytext);}
+"="                   {printf("Assignment:%s\n",yytext);}
+"+="                  {printf("Assignment:%s\n",yytext);}
+"-="                  {printf("Assignment:%s\n",yytext);}
+"*="                  {printf("Assignment:%s\n",yytext);}
+"/="                  {printf("Assignment:%s\n",yytext);}
+"%="                  {printf("Assignment:%s\n",yytext);}
+"&="                  {printf("Assignment:%s\n",yytext);}
+"|="                  {printf("Assignment:%s\n",yytext);}
+"^="                  {printf("Assignment:%s\n",yytext);}
+">>="                 {printf("Assignment:%s\n",yytext);}
+"<<="                 {printf("Assignment:%s\n",yytext);}
+"=="                  {printf("Comparision:%s\n",yytext);}
+"!="                  {printf("Comparision:%s\n",yytext);}
+">"                   {printf("Comparision:%s\n",yytext);}
+"<"                   {printf("Comparision:%s\n",yytext);}
+"<="                  {printf("Comparision:%s\n",yytext);}
+">="                  {printf("Comparision:%s\n",yytext);}
+"&&"                  {printf("Logical:%s\n",yytext);}
+"||"                  {printf("Logical:%s\n",yytext);}
+"!"                   {printf("Logical:%s\n",yytext);}
+"&"                   {printf("Bitwise:%s\n",yytext);}
+"|"                   {printf("Bitwise:%s\n",yytext);}
+"~"                   {printf("Bitwise:%s\n",yytext);}
+"^"                   {printf("Bitwise:%s\n",yytext);}
+"<<"                  {printf("Bitwise:%s\n",yytext);}
+">>"                  {printf("Bitwise:%s\n",yytext);}
+">>>"                 {printf("Bitwise:%s\n",yytext);}
+{Identifier}          {insert("Identifier",yytext,yyleng);}
 
 %%
 
@@ -145,7 +150,9 @@ int main(int argc, char* argv[]){
       printf("File not present");
       exit(0);
    }
+   
    yyset_in(fp);
+   printf("\n============Extra Symbols==============\n\n");
    yylex();
    printTable();
    return 0;
